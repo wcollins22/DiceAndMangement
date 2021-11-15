@@ -1,0 +1,93 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+    
+<head>
+	<title>Search Monsters</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+	<link rel="stylesheet" href = "{% static 'search.css'%}"/>
+	
+
+
+</head>
+<body> 
+        <div class="topnav">  
+          
+          <a  class="homevi" href="{% url 'DMview'%}">Home</a>
+          <a  class="log" href="{% url 'logout' %}">Logout</a>
+            <p>USERNAME: {{request.user}}</p>
+            <div class="dropdown">
+        
+                <button class="dropbtn">Monster</button>
+        
+                <div class="dropdown-content">
+                  <a href="{% url 'CreateMonster' %}">Monster Creation</a>
+                    <a href="{% url 'search-m' %}">Search Monsters</a>
+                    <a href="#">Randomize Monsters</a>
+                </div>
+            </div>
+            <div class="dropdown">
+        
+                <button class="dropbtn">Characters</button>
+        
+                <div class="dropdown-content">
+                  <a href="{% url 'CreateCharacter' %}">Character Creation</a>
+                    <a href="{% url 'search-c' %}">Search Characters</a>
+                    <a href="#">Randomize Characters</a>
+                </div>
+            </div>
+            <div class="dropdown">
+        
+                <button class="dropbtn">Campaigns</button>
+                
+                <div class="dropdown-content">
+                  <a href="{% url 'CreateMonster' %}">Campaign Creation</a>
+                    <a href="#">Search Campaigns</a>
+                    
+                </div>
+                
+            </div>
+            
+          
+        </div>
+    <div class="bodi1">
+          <h1>Search Monster</h1>
+            <form class="inp" method="GET" action="">
+              {%csrf_token%}
+   
+			
+		
+
+        <label>
+            <p class="next1">Monster's Name<p>
+            <input class="inp" type="text" name="search">
+        </label>
+
+        <input class="inp" type="submit">
+    
+        {% for monster in monsters %}
+          <a href="#" >
+            <div class="card">
+              <h3>Monster's Name:</h3>
+              <p>{{monster.name}}</p><br>
+              <h3>Created by:</h3>
+              <p>{{monster.creator}}</p>
+            </div>  
+          </a>
+        {% endfor %}
+
+
+
+    </div>
+	</form>
+
+
+
+
+
+    
+</body>
+</html>
