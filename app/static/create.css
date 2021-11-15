@@ -1,0 +1,54 @@
+p {
+    color:white;
+    text-align: center;
+}
+
+body {
+    background-color: rgb(211, 211, 211);
+}
+
+h1 {
+    text-align: center;
+   padding: 1em;
+    color: white;
+}
+
+.bodi{
+    border: solid 5px black;
+    width: 50em;
+    height: 27em;
+    margin-left: 20em;
+    background: darkblue;
+    margin-top: 10em;
+    
+  
+}
+.inp{
+    margin-left:  22.5em;
+    margin-top: -9em;
+}
+
+.mla{
+    
+    height: 3em;
+}
+
+.next{
+    margin-right: 10em;
+}
+.next1{
+    margin-right: 11.5em;
+}
+
+.bodi1{
+    border: solid 5px black;
+    width: 50em;
+    height: 35em;
+    margin-left: 20em;
+    background: darkblue;
+    margin-top: 6em;
+    
+  
+}
+
+
