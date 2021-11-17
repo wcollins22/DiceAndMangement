@@ -112,7 +112,7 @@ ul {
     align-items: center;
     width: fit-content;
     border-radius: 25px;
-    border-color: black;
+    border-color: black ;
     padding: 3em;
     box-shadow: 10px 5px 5px grey;
     padding: 2em;
@@ -128,12 +128,12 @@ ul {
     padding-left: 2em;
     padding-right: 2em;
 }
-.bodi1{
+.bodi2{
     border: solid 5px black;
     width: 50em;
     height: 35em;
     margin-left: 20em;
-    background: #0047AB;
+    background: darkblue;
     margin-top: 6em;
     
   
