@@ -4,7 +4,8 @@ from django.http import HttpResponse
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
 from .forms import *
-
+import random
+from datetime import datetime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
@@ -195,7 +196,6 @@ def search_monster(request):
         search = request.GET["search"]
         monsters = Monster.objects.filter(name=search)
         return render(request, "search_monster.html", {"monsters":monsters})	
-
     return render(request, "search_monster.html")
 
 @login_required(login_url='login')
@@ -204,7 +204,6 @@ def search_character(request):
         search = request.GET["search"]
         characters = Character.objects.filter(name=search)
         return render(request, "search_character.html", {"characters": characters})	
-
     return render(request, "search_character.html")
 
 @login_required(login_url='login')
@@ -212,26 +211,132 @@ def search_campaign(request):
     if request.GET:
         search = request.GET["search"]
         campaigns = Campaign.objects.filter(name=search)
-        return render(request, "search_monster.html", {"campaigns":campaigns})	
-
+        return render(request, "search_campaign.html", {"campaigns":campaigns})	
     return render(request, "search_campaign.html")
 
-
+@login_required(login_url='login')
 def add_mstats_view(request,pk):
-    monster_id = Monster.objects.get(id=pk)
+    monster = Monster.objects.get(id=pk)
     form = CreateStatsMForm()
     if request.method == 'POST':
         form = CreateStatsMForm(request.POST)
         if form.is_valid():
-            for monster in Monster.objects.all():
-                if monster_id == monster:
-                    m = monster
-            stats = form.save()
-            stats.monster = m
-            stats.save()
+            monster.stats = form.save()
+            monster.save()
             return redirect('DMview')
 
     context = {'form':form}
     return render(request, 'addm_stats.html', context)
-    	
 
+@login_required(login_url='login')
+def add_cstats_view(request,pk):
+    character = Character.objects.get(id=pk)
+    form = CreateStatsCForm()
+    if request.method == 'POST':
+        form = CreateStatsCForm(request.POST)
+        if form.is_valid():
+            character.stats = form.save()
+            character.save()
+            return redirect('DMview')
+
+    context = {'form':form}
+    return render(request, 'addc_stats.html', context)
+
+@login_required(login_url='login')
+def add_notes_view(request,pk):
+    campaign = Campaign.objects.get(id=pk)
+    form = CreateNoteForm()
+    if request.method == 'POST':
+        form = CreateNoteForm(request.POST)
+        if form.is_valid():
+            note = form.save()
+            note.campaign = campaign
+            note.save()
+            return redirect('DMview')
+
+    context = {'form':form}
+    return render(request, 'add_notes.html', context)
+
+@login_required(login_url='login')
+def view_monster(request, pk):
+    monster = Monster.objects.get(id=pk)
+    mc = Comment.objects.filter(monster=monster)
+    
+    form = CreateCommentForm()
+
+    if request.method == "POST":
+        form = CreateCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save()
+            comment.content = form.cleaned_data["content"]
+            comment.monster = monster
+            comment.user = request.user
+            comment.save()
+            monster.save()
+            return redirect(f"/view_monster/{monster.id}")
+    context = {
+		"monster":monster,
+		"form":form,
+		'mc': mc
+	}
+    return render(request, 'monster_view.html', context)
+
+@login_required(login_url='login')
+def view_character(request, pk):
+    character = Character.objects.get(id=pk)
+    comments = Comment.objects.filter(character=character)
+    form = CreateCommentForm()
+
+    if request.method == "POST":
+        form = CreateCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save()
+            comment.content = form.cleaned_data["content"]
+            comment.character = character
+            comment.user = request.user
+            comment.save()
+            character.save()
+            return redirect(f"/view_character/{character.id}")
+
+    context = {
+		"character":character,
+		"form":form,
+		"comments":comments
+	}
+
+    return render(request, 'character_view.html', context)
+
+@login_required(login_url='login')
+def view_campaign(request, pk):
+    campaign = Campaign.objects.get(id=pk)
+    context = {"campaign":campaign}
+    return render(request, 'campaign_view.html', context)
+
+
+@login_required(login_url='login') 	
+def random_characters(request):
+    if request.method == 'POST':
+        gender = ['male','female'] 
+        name = random.choice(['Nalla','Skarde','Ødger','Torsten','Sten','Arne','Paikt','Ux',
+		'Ziah','Ameria','Serena','Sariah','Chara','Annalisa','Kelsey','Octavia','Petyr','Sansa',
+		'Yennefer','Albus','Emmett','Tyrion','Freya','Korra','Madeleine','Morgana','Ravenna',
+		'Ambrose','Kirk','Aqua','Talus','Valatos','Dimitri','Zorn',])
+        haircolor = ['Red','Blonde','Brown','Black','Blue','Green','Purple','White']
+        hairlength = ['Short','Medium','Long']
+        eyes = ['Red','Yellow','Hazel','Black','Blue','Green','Purple','White']
+        feet = ['3','4','5','6','7','8']
+        inches = ['0','1','2','3','4','5','6','7','8','9','10','11',]
+        classes = random.choice(["Barbarian","Bard",  "Cleric","Druid","Fighter","Monk","Paladin","Ranger","Rogue","Sorcerer", "Warlock","Wizard"])
+        races = random.choice(['Human','Elf','Dark Elf','Dwarf','Halfling','Teifling','Aarakocra','Dragonborn',
+		'Genasi','Gnome','Goliath','Half-Elf','Half-Orc','Aasimar', 'incel'])
+        region = ['Esnuesia','Hasmeassau','Ofrurg','Sepreau','Strucor','Crubar','Oglon','Usmium','Skuiz Shium','Claum Snor',
+		'Lestaoque','Yustiowana','Iesnad','Hosnus','Shiavania','Gluasal','Eflar','Adrya','Smaey Skein','Snov Spos']
+        weight = random.randint(70,300)
+        descript = f"{random.choice(gender)}, Has {random.choice(hairlength)} {random.choice(haircolor)} with {random.choice(eyes)},standing at ft{random.choice(feet)},{random.choice(inches)}, weighing in at {weight}, from the region of {random.choice(region)}"
+        date_created = datetime.now()
+        character = Character(name=name,descript=descript,race=races,classess=classes,date_created=date_created,creator=request.user,stats=None)
+        character.save()
+        return redirect('DMview')
+    return (request, 'random_character.html')
+
+	
