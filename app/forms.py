@@ -15,7 +15,7 @@ class CreateMonsterForm(ModelForm):
     class Meta:
         model = Monster
         fields ='__all__'
-        exclude = ['creator', 'stats']
+        exclude = ['creator', 'stats', 'comments']
 
 class CreateCharacterForm(ModelForm):
     class Meta:
@@ -46,8 +46,10 @@ class CreateNoteForm(ModelForm):
     class Meta:
         model = Notes
         fields = '__all__'
+        exclude = ['campaign']
 
 class CreateCommentForm(ModelForm):
     class Meta:
         model = Comment
         fields = ["content"]
+        exclude = ("user",)
