@@ -11,7 +11,18 @@
 	<link rel="stylesheet" href = "{% static 'search.css'%}"/>
 	
 
-
+  <style>
+    .bodi1{
+        border: solid 5px black;
+        width: 50em;
+        height: 35em;
+        margin-left: 20em;
+        background: darkblue;
+        margin-top: 6em;
+        
+      
+    }
+    </style>
 </head>
 <body> 
         <div class="topnav">  
@@ -45,7 +56,7 @@
                 
                 <div class="dropdown-content">
                   <a href="{% url 'CreateMonster' %}">Campaign Creation</a>
-                    <a href="#">Search Campaigns</a>
+                    <a href="{% url 'search-ca' %}">Search Campaigns</a>
                     
                 </div>
                 
@@ -68,13 +79,13 @@
 
         <input class="inp" type="submit">
     
-        {% for monster in monsters %}
-          <a href="#" >
+        {% for character in characters %}
+          <a href="{% url 'view_character' character.id %}">
             <div class="card">
-              <h3>Monster's Name:</h3>
-              <p>{{monster.name}}</p><br>
+              <h3>Character's Name:</h3>
+              <p>{{character.name}}</p><br>
               <h3>Created by:</h3>
-              <p>{{monster.creator}}</p>
+              <p>{{character.creator}}</p>
             </div>  
           </a>
         {% endfor %}
