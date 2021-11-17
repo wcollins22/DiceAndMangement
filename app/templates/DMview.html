@@ -9,6 +9,7 @@
 
 <style>
     body {
+        background-image: url(static/images/search.jpeg)
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     }
@@ -146,7 +147,7 @@
             <div class="dropdown-content">
               <a href="{% url 'CreateCharacter' %}">Character Creation</a>
                 <a href="{% url 'search-c' %}">Search Characters</a>
-                <a href="#">Randomize Characters</a>
+                <a href="{% url 'randomch' %}">Randomize Characters</a>
             </div>
         </div>
         <div class="dropdown">
@@ -177,8 +178,12 @@
                             <p>Name: {{monster.name}}</p>
                             <p>Description: {{monster.descript}}</p>
                             <p>Date Created: {{monster.date_created}}</p>
-                            <p>Stats {{monster.stats_set}}</p>
-                            <a href="{% url 'm_stats' monster.id%}">Add Stats</a></p>
+                            {% if monster.stats == None %}
+                                <a href="{% url 'm_stats' monster.id%}">Add Stats</a></p>
+                            {% else %}
+                                <a href="#"> Update Stats</a>
+                            {% endif %}
+                            
                         </div> 
                     </div>
                 </div>
@@ -199,6 +204,11 @@
                     <p>Class: {{character.classes}}</p>
                     <p>Description: {{character.descript}}</p>
                     <p>Date Created: {{character.date_created}}</p>
+                    {% if character.stats == None %}
+                        <a href="{% url 'c_stats' character.id%}">Add Stats</a></p>
+                    {% else %}
+                        <a href="#"> Update Stats</a>
+                    {% endif %}
                 </div> 
             </div>
         </div>
@@ -214,6 +224,7 @@
                     <p>Name: {{campaign.name}}</p>
                     <p>Description: {{campaign.descript}}</p>
                     <p>Date Created: {{campaign.date_created}}</p>
+                    <a href="{% url 'notes' campaign.id%}">Add Notes</a></p>
                 </div> 
             </div>
         </div>
