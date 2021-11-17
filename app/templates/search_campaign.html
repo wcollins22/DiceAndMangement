@@ -11,7 +11,18 @@
 	<link rel="stylesheet" href = "{% static 'search.css'%}"/>
 	
 
-
+  <style>
+    .bodi1{
+        border: solid 5px black;
+        width: 50em;
+        height: 35em;
+        margin-left: 20em;
+        background: darkblue;
+        margin-top: 6em;
+        
+      
+    }
+    </style>
 </head>
 <body> 
         <div class="topnav">  
@@ -53,36 +64,39 @@
             
           
         </div>
-    <div class="bodi1">
-          <h1>Search Campaign</h1>
-            <form class="inp" method="GET" action="">
-              {%csrf_token%}
-   
-			
-		
+        <div class="bodi1">
+              <h1>Search Campaign</h1>
+                <form class="inp" method="GET" action="">
+                  {% csrf_token %}
+                  <label>
+                      <p class="next1">Campaign Name<p>
+                      <input class="inp" type="text" name="search">
+                  </label>
 
-        <label>
-            <p class="next1">Monster's Name<p>
-            <input class="inp" type="text" name="search">
-        </label>
+                  <input class="inp" type="submit">
+        
+            
 
-        <input class="inp" type="submit">
-    
-        {% for campaign in campaigns %}
-          <a href="#" >
-            <div class="card">
-              <h3>Campaign Name:</h3>
-              <p>{{campaign.name}}</p><br>
-              <h3>Created by:</h3>
-              <p>{{campaign.creator}}</p>
-            </div>  
-          </a>
-        {% endfor %}
-
+                </form>
+            {% for campaign in campaigns %}
+              <a href="{% url 'view_campaign' campaign.id %}">
+                <div class="card">
+                  <h3>Campaign Name:</h3>
+                  <p>{{campaign.name}}</p><br>
+                  <h3>Created by:</h3>
+                  <p>{{campaign.creator}}</p>
+                </div>  
+              </a>
+            {% endfor %}
 
 
-    </div>
-	</form>
+          </div>
+            
+
+            
+
+        </div>
+
 
 
 
