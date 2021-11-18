@@ -40,11 +40,14 @@ urlpatterns = [
     path("search_campaign/", views.search_campaign, name="search-ca"),
     path("add_stats_m/<str:pk>/", views.add_mstats_view, name="m_stats"),
     path("add_stats_c/<str:pk>/", views.add_cstats_view, name="c_stats"),
+    path("update_stats_m/<str:pk>/", views.updateMonsterStats, name="updatem_stats"),
+    path("update_stats_c/<str:pk>/", views.updateCharacter, name="updatec_stats"),
     path("add_notes/<str:pk>/", views.add_notes_view, name="notes"),
     path('view_monster/<str:pk>/', views.view_monster, name='view_monster'),
     path('view_character/<str:pk>/', views.view_character, name='view_character'),
     path('view_campaign/<str:pk>/', views.view_campaign, name='view_campaign'),
-    path('random_character/',views.random_characters, name='randomch')
+    path('random_character/', views.random_characters, name='randomch'),
+    path('random_monster', views.random_monsters, name='randomm')
    
 
 ]
