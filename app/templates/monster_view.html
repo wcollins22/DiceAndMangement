@@ -161,6 +161,8 @@
     padding: 1em;
 }
 .stats{
+    display: grid;
+    grid-template-columns: repeat(3,120px);
     border: solid 6px darkblue;
     background: white;
     height: 11em;
@@ -210,9 +212,6 @@
     padding-top: 2em;
 }
 
-textarea{
-    width: 100%;
-}
 
 
 
@@ -227,8 +226,31 @@ textarea{
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
+
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-gap: 1px;
+  background-color: none;
+  padding: 10px;
+  margin-bottom: -4em;
+  margin-left: 1em;
 }
 
+.grid-container > div {
+  background-color: none;
+  text-align: center;
+  padding-right: 5px;
+  
+  
+}
+.create{
+    margin-left: 25em;
+}
+.w{
+    margin-top:.5em;
+}
 </style>
     <body>
         <div class="topnav">  
@@ -242,7 +264,7 @@ textarea{
                 <div class="dropdown-content">
                 <a href="{% url 'CreateMonster' %}">Monster Creation</a>
                     <a href="{% url 'search-m' %}">Search Monsters</a>
-                    <a href="#">Randomize Monsters</a>
+                    <a href="{% url 'randomm' %}">Randomize Monsters</a>
                 </div>
             </div>
             <div class="dropdown">
@@ -252,7 +274,7 @@ textarea{
                 <div class="dropdown-content">
                 <a href="{% url 'CreateCharacter' %}">Character Creation</a>
                     <a href="{% url 'search-c' %}">Search Characters</a>
-                    <a href="#">Randomize Characters</a>
+                    <a href="{% url 'randomch' %}">Randomize Characters</a>
                 </div>
             </div>
             <div class="dropdown">
@@ -282,15 +304,25 @@ textarea{
         </div>
         <div class="stats">
             <h5 class="i center">Stats:</h5>
-            <p class="in center">Health: </p><p class="chbox">{{monster.stats.Hp}}</p>
-            <p class="in center">Intelligence:</p>
-            <p class="chbox">{{monster.stats.Int}}</p>
-            <p class="in center">Strength:</p><p class="chbox">{{monster.stats.Str}}</p>
-            <p class="in center">Dexterity: </p><p class="chbox">{{monster.stats.Dex}}</p>
-            <p class="in center">Constitution:</p><p class="chbox"> {{monster.stats.Con}}</p>
-            <p class="in center">Wisdom:</p><p class="chbox"> {{monster.stats.Wis}}</p>
-            <p class="in center"> Walking Speed: </p><p class="chbox">{{monster.stats.Walk}}</p>
-            <p class="in center">Created By:{{monster.creator}} {{monster.date_created}}</p>
+            <div class="grid-container">
+               
+                <div><p class="in center">Health: </p></div>
+                <div><p class="chbox">{{monster.stats.Hp}}</p></div>
+                <div><p class="in center">Intelligence:</p></div>
+                <div><p class="chbox">{{monster.stats.Int}}</p></div>
+         
+                <div><p class="in center">Strength:</p></div>
+            
+                <div><p class="chbox">{{monster.stats.Str}}</p></div>
+                <div><p class="in center">Dexterity: </p></div><div><p class="chbox">{{monster.stats.Dex}}</p></div>
+                <div><p class="in center">Constitution:</p></div><div><p class="chbox"> {{monster.stats.Con}}</p></div>
+                <div><p class="in center">Wisdom:</p></div><div><p class="chbox"> {{monster.stats.Wis}}</p></div>
+            </div>
+            <p class="in center w"> Walking Speed: </p><p class="chbox w">{{monster.stats.Walk}}</p>
+       
+            <p class="in center create">Created By:{{monster.creator}} {{monster.date_created}}</p>
+            
+            
         </div>
         
             
