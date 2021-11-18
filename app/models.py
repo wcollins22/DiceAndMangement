@@ -83,12 +83,12 @@ class Campaign(models.Model):
     name = models.CharField(max_length=200)
     descript = models.CharField(max_length=3000)
     date_created = models.DateTimeField(auto_now_add=True)
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.PROTECT, null=True)
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, null=True)
 
 
 class Notes(models.Model):
     descript = models.CharField(max_length=3000)
-    campaign = models.ForeignKey(Campaign,on_delete=models.PROTECT, null=True)
+    campaign = models.ForeignKey(Campaign,on_delete=models.CASCADE, null=True)
 
 class Monster(models.Model):
    name = models.CharField(max_length=200, null=True)
@@ -103,8 +103,8 @@ class Monster(models.Model):
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.PROTECT, null=True)
     content = models.CharField(max_length=10000, null=True)
-    monster = models.ForeignKey(Monster,on_delete=models.PROTECT, null=True)
-    character = models.ForeignKey(Character, on_delete=models.PROTECT, null=True)
+    monster = models.ForeignKey(Monster,on_delete=models.CASCADE, null=True)
+    character = models.ForeignKey(Character, on_delete=models.CASCADE, null=True)
 
 
     def __str__(self) -> str:
