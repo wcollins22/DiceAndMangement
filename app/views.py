@@ -111,20 +111,50 @@ def updateCharacter(request, pk):
 		form = CreateCharacterForm(request.POST, instance=order)
 		if form.is_valid():
 			form.save()
-			return redirect('home')
+			return redirect('DMview')
 
 	context = {'form':form}
-	return render(request, 'update_ch.html', context)
+	return render(request, 'update_character.html', context)
+
+@login_required(login_url='login')
+def updateCharacterStats(request, pk):
+
+	order = StatsC.objects.get(id=pk)
+	form = CreateStatsCForm(instance=order)
+
+	if request.method == 'POST':
+		form = CreateStatsCForm(request.POST, instance=order)
+		if form.is_valid():
+			form.save()
+			return redirect('DMview')
+
+	context = {'form':form}
+	return render(request, 'updatec_stats.html', context)
+
+@login_required(login_url='login')
+def updateMonsterStats(request, pk):
+
+	order = StatsM.objects.get(id=pk)
+	form = CreateStatsMForm(instance=order)
+
+	if request.method == 'POST':
+		form = CreateStatsMForm(request.POST, instance=order)
+		if form.is_valid():
+			form.save()
+			return redirect('DMview')
+
+	context = {'form':form}
+	return render(request, 'updatem_stats.html', context)
 
 @login_required(login_url='login')
 def deleteCharacter(request, pk):
 	character = Character.objects.get(id=pk)
 	if request.method == "POST":
 		character.delete()
-		return redirect('home')
+		return redirect('DMview')
 
 	context = {'item':character}
-	return render(request, 'delete_ch.html', context)
+	return render(request, 'delete_character.html', context)
 
 @login_required(login_url='login')
 def updateMonster(request, pk):
@@ -136,20 +166,20 @@ def updateMonster(request, pk):
 		form = CreateMonsterForm(request.POST, instance=order)
 		if form.is_valid():
 			form.save()
-			return redirect('home')
+			return redirect('DMview')
 
 	context = {'form':form}
-	return render(request, 'update_m.html', context)
+	return render(request, 'update_monster.html', context)
 
 @login_required(login_url='login')
 def deleteMonster(request, pk):
 	monster = Monster.objects.get(id=pk)
 	if request.method == "POST":
 		monster.delete()
-		return redirect('home')
+		return redirect('DMview')
 
-	context = {'item':monster}
-	return render(request, 'delete_m.html', context)
+	context = {'monster':monster}
+	return render(request, 'delete_monster.html', context)
 
 
 @login_required(login_url='login')
@@ -175,20 +205,20 @@ def updateCampaign(request, pk):
 		form = CreateCampaignForm(request.POST, instance=order)
 		if form.is_valid():
 			form.save()
-			return redirect('home')
+			return redirect('DMview')
 
 	context = {'form':form}
-	return render(request, 'update_ca.html', context)
+	return render(request, 'update_campaign.html', context)
 
 @login_required(login_url='login')
 def deleteCampaign(request, pk):
 	campaign = Campaign.objects.get(id=pk)
 	if request.method == "POST":
 		campaign.delete()
-		return redirect('home')
+		return redirect('DMview')
 
 	context = {'item':campaign}
-	return render(request, 'delete_ch.html', context)
+	return render(request, 'delete_campaign.html', context)
 
 @login_required(login_url='login')
 def search_monster(request):
@@ -309,7 +339,8 @@ def view_character(request, pk):
 @login_required(login_url='login')
 def view_campaign(request, pk):
     campaign = Campaign.objects.get(id=pk)
-    context = {"campaign":campaign}
+    notes = Notes.objects.filter(campaign=campaign)
+    context = {"campaign":campaign,"notes":notes}
     return render(request, 'campaign_view.html', context)
 
 
@@ -328,15 +359,33 @@ def random_characters(request):
         inches = ['0','1','2','3','4','5','6','7','8','9','10','11',]
         classes = random.choice(["Barbarian","Bard",  "Cleric","Druid","Fighter","Monk","Paladin","Ranger","Rogue","Sorcerer", "Warlock","Wizard"])
         races = random.choice(['Human','Elf','Dark Elf','Dwarf','Halfling','Teifling','Aarakocra','Dragonborn',
-		'Genasi','Gnome','Goliath','Half-Elf','Half-Orc','Aasimar', 'incel'])
+		'Genasi','Gnome','Goliath','Half-Elf','Half-Orc','Aasimar'])
         region = ['Esnuesia','Hasmeassau','Ofrurg','Sepreau','Strucor','Crubar','Oglon','Usmium','Skuiz Shium','Claum Snor',
 		'Lestaoque','Yustiowana','Iesnad','Hosnus','Shiavania','Gluasal','Eflar','Adrya','Smaey Skein','Snov Spos']
         weight = random.randint(70,300)
-        descript = f"{random.choice(gender)}, Has {random.choice(hairlength)} {random.choice(haircolor)} with {random.choice(eyes)},standing at ft{random.choice(feet)},{random.choice(inches)}, weighing in at {weight}, from the region of {random.choice(region)}"
+        descript = f"{random.choice(gender)}, Has {random.choice(hairlength)} {random.choice(haircolor)} hair with {random.choice(eyes)} eyes,standing at {random.choice(feet)},{random.choice(inches)}ft weighing in at {weight} pounds, from the region of {random.choice(region)}"
         date_created = datetime.now()
-        character = Character(name=name,descript=descript,race=races,classess=classes,date_created=date_created,creator=request.user,stats=None)
+        character = Character(name=name,descript=descript,race=races,classes=classes,date_created=date_created,creator=request.user,stats=None)
         character.save()
         return redirect('DMview')
-    return (request, 'random_character.html')
+    return render(request, 'random_character.html')
+
+
+@login_required(login_url='login') 	
+def random_monsters(request):
+    if request.method == 'POST':
+        name = random.choice(['Blightlich','Doomstep','Duskmonster','Razorcreep','Lean Guardian', 'Putrid Hybrid','Muted Woman', 'Spite Fiend','Razorback Cat', 'Mountain Rhino','Viletalon','Cryptfoot',"Cursehand",'Soilsoul','World Frog','Webbug', 'Nighthag','Cavecreep','Dustcrackle'])
+        eyes = ['Red','Yellow','Hazel','Black','Blue','Green','Purple','White','Translucent', 'None']
+        texture = ['Slimy','Smooth','Rough','Fluffy','Hairy','Bumpy']
+        skincolor = ['Black','Red','Yellow','Green','Brown','White','Purple','Orange','Rainbow'] 
+        height = random.randint(1,50) 
+        weight = random.randint(10,5000)
+        descript = f'Skin: {random.choice(skincolor)},{random.choice(texture)} Eyes: {random.choice(eyes)}  Height: {height}ft  Weight: {weight}'
+        date_created = datetime.now()  
+        monster = Monster(name=name,descript=descript,date_created=date_created,creator=request.user,stats=None)
+        monster.save()
+        return redirect('DMview')
+    return render(request, 'random_monster.html')
+
 
 	
