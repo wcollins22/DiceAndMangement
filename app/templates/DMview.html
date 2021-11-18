@@ -55,15 +55,22 @@
   margin: 0 auto;
     }
     .divcard{
+  
         width: 20em;
         text-align: center;
         border:solid 4px black;
+        background: lightgrey;
         margin-bottom:3em;
         margin-left: 4em;
         padding: 1em;
+        color: darkblue;
     }
     .newcol{
+        display: grid;
         margin-left:3em;
+        grid-template-columns: repeat(3,120px);
+
+        
     }
 
 
@@ -119,6 +126,33 @@
  text-align: center;
  margin-left: 3em;
 }
+.stat{
+    border: solid 1px black;
+    text-decoration: none;
+    margin-left: .3px;
+    background: darkblue;
+    
+    color: white;
+    
+
+}
+.d{
+    margin-bottom: 5px;
+}
+
+.a{
+    color: white;
+    text-decoration: none;
+}
+.a:hover{
+    color: white;
+    text-decoration: none;
+    
+}
+.stat:hover{
+    background: black;
+    
+}
 
 </style>
 <body>
@@ -137,7 +171,7 @@
             <div class="dropdown-content">
               <a href="{% url 'CreateMonster' %}">Monster Creation</a>
                 <a href="{% url 'search-m' %}">Search Monsters</a>
-                <a href="#">Randomize Monsters</a>
+                <a href="{% url 'randomm' %}">Randomize Monsters</a>
             </div>
         </div>
         <div class="dropdown">
@@ -178,10 +212,12 @@
                             <p>Name: {{monster.name}}</p>
                             <p>Description: {{monster.descript}}</p>
                             <p>Date Created: {{monster.date_created}}</p>
+                            <button class="stat"><a href="{% url 'DeleteMonster' monster.id %}"class='a'>Delete Monster</a></button>
+                            <button class="stat"><a href="{% url 'UpdateMonster' monster.id %}" class="a">Update Character</a></button>
                             {% if monster.stats == None %}
-                                <a href="{% url 'm_stats' monster.id%}">Add Stats</a></p>
+                                <button class="stat"><a href="{% url 'm_stats' monster.id%}"class="a">Add Stats</a></button>
                             {% else %}
-                                <a href="#"> Update Stats</a>
+                                <button class="stat"><a href="{% url 'updatem_stats' monster.id%}" class="a"> Update Stats</a></button>
                             {% endif %}
                             
                         </div> 
@@ -204,11 +240,17 @@
                     <p>Class: {{character.classes}}</p>
                     <p>Description: {{character.descript}}</p>
                     <p>Date Created: {{character.date_created}}</p>
+                    <button class="stat d"><a href="{% url 'DeleteCharacter' character.id %}" class="a">Delete Character</a></button>
+                    <button class="stat"><a href="{% url 'UpdateCharacter' character.id %}" class="a">Update Character</a></button>
+
                     {% if character.stats == None %}
-                        <a href="{% url 'c_stats' character.id%}">Add Stats</a></p>
+                        <button class="stat"><a href="{% url 'c_stats' character.id%}" class="a">Add Stats</a></button>
                     {% else %}
-                        <a href="#"> Update Stats</a>
+                        <button class="stat"><a href="{% url 'updatec_stats' character.id %}" class="a">Update Stats</a></button>
                     {% endif %}
+                    
+
+
                 </div> 
             </div>
         </div>
@@ -224,7 +266,9 @@
                     <p>Name: {{campaign.name}}</p>
                     <p>Description: {{campaign.descript}}</p>
                     <p>Date Created: {{campaign.date_created}}</p>
-                    <a href="{% url 'notes' campaign.id%}">Add Notes</a></p>
+                    <button class="stat d"><a href="{% url 'DeleteCampaign' campaign.id %}" class="a">Delete Campaign</a></button>
+                     <button class="stat d"><a href="{% url 'UpdateCampaign' campaign.id %}" class="a">Delete Campaign</a></button>
+                    <button class="stat"><a href="{% url 'notes' campaign.id%}" class="a">Add Notes</a></button>
                 </div> 
             </div>
         </div>
